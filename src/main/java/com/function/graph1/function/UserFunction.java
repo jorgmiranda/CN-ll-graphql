@@ -81,8 +81,9 @@ public class UserFunction {
                 .dataFetcher("getUsersByEmail", new UserDataFetcher().getUsersByEmailFetcher()))
             .type("Mutation", builder -> builder
                 .dataFetcher("createUser", new UserDataFetcher().createUserFetcher())
-                .dataFetcher("updateUser", new UserDataFetcher().updateUserFetcher())
-                .dataFetcher("deleteUser", new UserDataFetcher().deleteUserFetcher()))
+                // .dataFetcher("updateUser", new UserDataFetcher().updateUserFetcher())
+                // .dataFetcher("deleteUser", new UserDataFetcher().deleteUserFetcher())
+                )
             .build();
 
         SchemaGenerator schemaGenerator = new SchemaGenerator();
