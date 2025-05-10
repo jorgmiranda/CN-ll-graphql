@@ -3,6 +3,8 @@ package com.function.graph1.resolver;
 import java.util.List;
 
 import com.function.graph1.model.User;
+import com.function.graph1.model.UserRole;
+import com.function.graph1.service.UserRoleService;
 import com.function.graph1.service.UserService;
 
 import graphql.schema.DataFetcher;
@@ -10,6 +12,7 @@ import graphql.schema.DataFetcher;
 public class UserDataFetcher {
 
     private final UserService userService = new UserService();
+    private final UserRoleService userRoleService = new UserRoleService();
 
     public DataFetcher<List<User>> getAllUsersFetcher() {
         return environment -> userService.getAllUsers();
@@ -21,7 +24,12 @@ public class UserDataFetcher {
             String email = environment.getArgument("email");
             String password = environment.getArgument("password");
             User user = new User(name, email, password);
-            userService.createUser(user);
+            Long id = userService.createUser(user);
+            System.out.println(id);
+            UserRole a = new UserRole(id, 2L);
+
+            userRoleService.assignRoleToUser(a);
+
             return "User created successfully";
         };
     }
@@ -50,6 +58,13 @@ public class UserDataFetcher {
         return environment -> {
             String email = environment.getArgument("email");
             return userService.getUsersByEmail(email); // este método lo defines tú
+        };
+    }
+
+    public DataFetcher<User> getUserByIdFetcher() {
+        return environment -> {
+            Long id = Long.valueOf(environment.getArgument("id"));
+            return userService.getUserById(id);
         };
     }
 }
